@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soundify/core/styles/colors.dart';
 import 'package:soundify/core/styles/text_styles.dart';
 import 'package:soundify/presentation/screens/auth/register_screen.dart';
+import 'package:soundify/presentation/screens/main_screen.dart';
 import 'package:soundify/presentation/widgets/common/custom_button.dart';
 import 'package:soundify/presentation/widgets/common/custom_text_field.dart';
 
@@ -93,7 +94,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginButton() {
     return CustomButton(
       text: 'Login',
-      onPressed: () => () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainScreen(
+           
+            ),
+          ),
+        );
+      },
       isHovered: _isHoveredLoginButton,
       onHover: (value) => setState(() => _isHoveredLoginButton = value),
     );
