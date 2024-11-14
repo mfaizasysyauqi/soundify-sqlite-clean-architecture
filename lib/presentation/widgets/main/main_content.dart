@@ -1,5 +1,8 @@
 // lib/presentation/widgets/main/main_content.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundify/presentation/providers/primary_widget_state_provider.dart';
+import 'package:soundify/presentation/providers/secondary_widget_state_provider.dart';
 import '../../../core/styles/colors.dart';
 import '../../../core/utils/layout_manager.dart';
 import '../../../core/constants/app_constants.dart';
@@ -37,12 +40,20 @@ class MainContent extends StatelessWidget {
         color: primaryColor,
         borderRadius: BorderRadius.circular(20),
       ),
+      child: Consumer<PrimaryWidgetStateProvider>(
+        builder: (context, primaryWidgetStateProvider, child) {
+          Widget activePrimaryWidget = primaryWidgetStateProvider.currentWidget;
+          return activePrimaryWidget;
+        },
+      ),
     );
   }
 
   Widget _buildSecondaryContainer(BuildContext context) {
     return Flexible(
-      flex: MediaQuery.of(context).size.width <= LayoutBreakpoints.desktop ? 1 : 0,
+      flex: MediaQuery.of(context).size.width <= LayoutBreakpoints.desktop
+          ? 1
+          : 0,
       child: Container(
         constraints: const BoxConstraints(
           maxWidth: LayoutBreakpoints.maxSecondaryContainerWidth,
@@ -50,6 +61,12 @@ class MainContent extends StatelessWidget {
         decoration: BoxDecoration(
           color: primaryColor,
           borderRadius: BorderRadius.circular(20),
+        ),
+        child: Consumer<SecondaryWidgetStateProvider>(
+          builder: (context, secondaryWidgetStateProvider, child) {
+            Widget activeSecondaryWidget = secondaryWidgetStateProvider.currentWidget;
+            return activeSecondaryWidget;
+          },
         ),
       ),
     );
