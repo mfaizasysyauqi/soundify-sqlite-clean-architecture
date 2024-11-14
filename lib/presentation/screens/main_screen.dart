@@ -1,10 +1,12 @@
 // lib/presentation/screens/main/main_screen.dart
 import 'package:flutter/material.dart';
 import 'package:soundify/core/styles/text_styles.dart';
+import 'package:soundify/presentation/managers/modal_manager.dart';
+import 'package:soundify/presentation/widgets/player/footer_widget.dart';
 import 'package:soundify/presentation/widgets/main/header_widget.dart';
-import 'package:soundify/presentation/widgets/main/menu_modal.dart';
+import 'package:soundify/presentation/widgets/main/main_content.dart';
 import 'package:soundify/presentation/widgets/main/sidebar_widget.dart';
-// lib/presentation/screens/main/main_screen.dart
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -13,48 +15,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String? _currentUserRole;
-  OverlayEntry? _overlayEntry;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserRole();
-  }
+  final ModalManager _modalManager = ModalManager();
 
   @override
   void dispose() {
-    _closeModal();
+    _modalManager.dispose();
     super.dispose();
   }
 
-  Future<void> _loadUserRole() async {
-    // Implement your user role loading logic here
-    setState(() {
-      _currentUserRole = 'User'; // Replace with actual role
-    });
-  }
-
   void _showModal(BuildContext context) {
-    // Ensure any existing overlay is closed first
-    _closeModal();
-    
-    // Create and show new overlay
-    _overlayEntry = OverlayEntry(
-      builder: (context) => MenuModal(
-        currentUserRole: _currentUserRole,
-        onClose: _closeModal,
-      ),
-    );
-
-    if (mounted) {
-      Overlay.of(context).insert(_overlayEntry!);
-    }
-  }
-
-  void _closeModal() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+    _modalManager.showModal(context, () => _modalManager.closeModal());
   }
 
   @override
@@ -68,9 +38,12 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SidebarWidget(
-                    onShowModal: _showModal,
-                    currentUserRole: _currentUserRole,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: SidebarWidget(
+                      onShowModal: (BuildContext ctx) =>
+                          _showModal(ctx), // Updated callback
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -78,7 +51,10 @@ class _MainScreenState extends State<MainScreen> {
                       child: Column(
                         children: [
                           HeaderWidget(
-                            onProfileTap: () => (),
+                            onProfileTap: () => {},
+                          ),
+                          const Expanded(
+                            child: MainContent(),
                           ),
                         ],
                       ),
@@ -87,6 +63,7 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
+            const FooterWidget(),
           ],
         ),
       ),
