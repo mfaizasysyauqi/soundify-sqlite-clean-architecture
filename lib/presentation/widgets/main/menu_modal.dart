@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:soundify/core/styles/colors.dart';
 import 'package:soundify/core/styles/text_styles.dart';
+
 // lib/presentation/widgets/main/menu_modal.dart
 class MenuModal extends StatelessWidget {
-  final String? currentUserRole;
   final VoidCallback onClose;
 
   const MenuModal({
     super.key,
-    this.currentUserRole,
     required this.onClose,
   });
 
@@ -60,14 +59,11 @@ class MenuModal extends StatelessWidget {
                 text: "Create Playlist",
                 onTap: onClose,
               ),
-              if (currentUserRole == 'Artist' || currentUserRole == 'Admin') ...[
-                const SizedBox(height: 8),
-                _buildMenuItem(
-                  icon: Icons.add,
-                  text: "Add Song",
-                  onTap: onClose,
-                ),
-              ],
+              _buildMenuItem(
+                icon: Icons.add,
+                text: "Add Song",
+                onTap: onClose,
+              ),
             ],
           ),
         ),

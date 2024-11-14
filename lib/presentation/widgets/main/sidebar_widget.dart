@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:soundify/core/styles/colors.dart';
 import 'package:soundify/core/styles/text_styles.dart';
 
-// lib/presentation/widgets/main/sidebar_widget.dart
 class SidebarWidget extends StatelessWidget {
-  final Function(BuildContext) onShowModal;
-  final String? currentUserRole;
+  final Function(BuildContext) onShowModal; // Updated type definition
 
   const SidebarWidget({
     super.key,
     required this.onShowModal,
-    this.currentUserRole,
   });
 
   @override
